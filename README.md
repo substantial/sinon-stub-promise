@@ -38,12 +38,11 @@ function doSomethingWithAPromise(promise, object) {
 }
 
 // Test
-
 describe('stubbing a promise', function() {
   var promise;
 
   beforeEach(function() {
-    promise = sinon.stubPromise();
+    promise = sinon.stub().returnsPromise();
   });
 
   it('can resolve', function() {
