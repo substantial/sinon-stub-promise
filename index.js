@@ -5,9 +5,17 @@ function buildThenable() {
     then: function(onFulfill, onReject) {
       if (this.resolved) {
         var returned = onFulfill(this.resolveValue);
+
+        // promise returned, return that for next handler in chain
         if (returned && returned.then) {
           return returned;
         }
+
+        // update resolve value for next promise in chain
+        if (returned) {
+          this.resolveValue = returned;
+        }
+
         return this;
       }
 
