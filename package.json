@@ -2,13 +2,17 @@
   "name": "sinon-stub-promise",
   "version": "0.0.0",
   "description": "Synchronous Promise stubbing for Sinon.JS",
+  "author": "Alex May <alex@substantial.com>",
   "engines": {
     "node": "0.10.x"
   },
+  "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "node_modules/.bin/mocha spec"
   },
   "devDependencies": {
-    "mocha": "^2.1.0"
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2"
   }
 }
