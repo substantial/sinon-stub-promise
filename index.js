@@ -40,19 +40,22 @@ function buildThenable() {
 }
 
 function setup(sinon) {
-  sinon.stub.resolves = function(value) {
+  function resolves(value) {
     this.thenable.resolved = true;
     this.thenable.resolveValue = value;
     return this;
-  };
+  }
 
-  sinon.stub.rejects = function(value) {
+  function rejects(value) {
     this.thenable.rejected = true;
     this.thenable.rejectValue = value;
     return this;
-  };
+  }
 
   sinon.stub.returnsPromise = function() {
+    this.resolves = resolves;
+    this.rejects = rejects;
+
     var thenable = buildThenable();
     this.thenable = thenable;
     this.returns(thenable);
