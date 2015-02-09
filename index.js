@@ -52,13 +52,12 @@ function setup(sinon) {
     return this;
   };
 
-  sinon.stubPromise = function() {
+  sinon.stub.returnsPromise = function() {
     var thenable = buildThenable();
-    var stub = sinon.stub();
-    stub.thenable = thenable;
-    stub.returns(thenable);
+    this.thenable = thenable;
+    this.returns(thenable);
 
-    return stub;
+    return this;
   };
 }
 

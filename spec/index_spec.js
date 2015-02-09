@@ -11,7 +11,7 @@ describe('stubPromise', function() {
     f = function() {};
     resolveValue = null;
     rejectValue = null;
-    promise = sinon.stubPromise();
+    promise = sinon.stub().returnsPromise();
   });
 
   it('works without requiring explicit resolve or reject', function(done) {
