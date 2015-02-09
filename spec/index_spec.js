@@ -1,6 +1,7 @@
 var sinon = require('sinon');
 var sinonStubPromise = require('../index');
 var expect = require('chai').expect;
+var RSVP = require('rsvp');
 
 sinonStubPromise(sinon);
 
@@ -134,6 +135,21 @@ describe('stubPromise', function() {
     it('supports chaining then, catch, then', function(done) {
       promise().then(f).catch(f).then(f);
       done();
+    });
+
+    it('returns promise if returned while chaining', function(done) {
+      promise.resolves('initial value');
+
+      var fReturningPromise = function() {
+        return new RSVP.Promise(function(resolve, reject) {
+          resolve('promise value');
+        });
+      };
+
+      promise().then(fReturningPromise).then(function(innerValue) {
+        expect(innerValue).to.eql('promise value');
+        done();
+      });
     });
 
   });

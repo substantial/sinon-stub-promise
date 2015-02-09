@@ -4,7 +4,10 @@ function buildThenable() {
   return {
     then: function(onFulfill, onReject) {
       if (this.resolved) {
-        onFulfill(this.resolveValue);
+        var returned = onFulfill(this.resolveValue);
+        if (returned && returned.then) {
+          return returned;
+        }
         return this;
       }
 
