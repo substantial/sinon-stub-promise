@@ -1,0 +1,14 @@
+{
+  "name": "sinon-stub-promise",
+  "version": "0.0.0",
+  "description": "Synchronous Promise stubbing for Sinon.JS",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
+  }
+}
