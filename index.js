@@ -21,6 +21,9 @@ function buildThenable() {
         return this;
       }
       return this;
+    },
+
+    finally: function() {
     }
   };
 }

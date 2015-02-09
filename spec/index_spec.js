@@ -14,7 +14,7 @@ describe('stubPromise', function() {
   });
 
   it('works without requiring explicit resolve or reject', function(done) {
-    promise().then(function() {});
+    promise().then(f).catch(f).finally(f);
     done();
   });
 
@@ -74,7 +74,7 @@ describe('stubPromise', function() {
   it('can reject via reject function ', function() {
     promise.rejects('reject value');
 
-    promise().then(function() {}, function(arg) {
+    promise().then(f, function(arg) {
       rejectValue = arg;
     });
 
