@@ -1,11 +1,11 @@
 {
   "name": "sinon-stub-promise",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Synchronous Promise stubbing for Sinon.JS",
   "author": "Alex May <alex@substantial.com>",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/substantial/sinon-stub-promise"
+    "type": "git",
+    "url": "https://github.com/substantial/sinon-stub-promise"
   },
   "engines": {
     "node": "0.10.x"
