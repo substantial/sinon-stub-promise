@@ -2,35 +2,42 @@
 
 function buildThenable() {
   return {
+    _reject: function(onReject) {
+      var rejectedValue = onReject(this.rejectValue);
+
+      // update reject value for next promise in chain
+      if (rejectedValue) {
+        this.rejectValue = rejectedValue;
+      }
+    },
+
     then: function(onFulfill, onReject) {
       if (this.resolved) {
-        var returned = onFulfill(this.resolveValue);
+        var resolvedValue = onFulfill(this.resolveValue);
 
         // promise returned, return that for next handler in chain
-        if (returned && returned.then) {
-          return returned;
+        if (resolvedValue && resolvedValue.then) {
+          return resolvedValue;
         }
 
         // update resolve value for next promise in chain
-        if (returned) {
-          this.resolveValue = returned;
+        if (resolvedValue) {
+          this.resolveValue = resolvedValue;
         }
-
-        return this;
       }
 
       if (this.rejected && onReject) {
-        onReject(this.rejectValue);
-        return this;
+        this._reject(onReject);
       }
+
       return this;
     },
 
     catch: function(onReject) {
-      if (this.rejected) {
-        onReject(this.rejectValue);
-        return this;
+      if (this.rejected && onReject) {
+        this._reject(onReject);
       }
+
       return this;
     },
 
