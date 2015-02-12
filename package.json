@@ -1,6 +1,6 @@
 {
   "name": "sinon-stub-promise",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Synchronous Promise stubbing for Sinon.JS",
   "author": "Alex May <alex@substantial.com>",
   "repository": {
