@@ -152,13 +152,26 @@ describe('stubPromise', function() {
       });
     });
 
-    it('returns intermediate values', function() {
+    it('returns intermediate values from then', function() {
       promise.resolves();
 
       var intermediateValue;
       promise().then(function() {
         return 'intermediate value';
       }).then(function(value) {
+        intermediateValue = value;
+      });
+
+      expect(intermediateValue).to.eql('intermediate value');
+    });
+
+    it('returns intermediate values from catch', function() {
+      promise.rejects();
+
+      var intermediateValue;
+      promise().catch(function() {
+        return 'intermediate value';
+      }).catch(function(value) {
         intermediateValue = value;
       });
 
