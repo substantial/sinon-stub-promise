@@ -115,6 +115,30 @@ describe('stubPromise', function() {
     done();
   });
 
+  it('respects resolve if resolve is last', function() {
+    promise.rejects();
+    promise.resolves();
+
+    var rejectedCalled = false;
+    promise().catch(function() {
+      rejectedCalled = true;
+    });
+
+    expect(rejectedCalled).to.be.false;
+  });
+
+  it('respects reject if reject is last', function() {
+    promise.resolves();
+    promise.rejects();
+
+    var resolveCalled = false;
+    promise().then(function() {
+      resolveCalled = true;
+    });
+
+    expect(resolveCalled).to.be.false;
+  });
+
   describe('chaining', function() {
     it('supports then chaining', function(done) {
       promise().then(f).then(f);

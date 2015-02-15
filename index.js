@@ -42,12 +42,14 @@ function buildThenable() {
 function setup(sinon) {
   function resolves(value) {
     this.thenable.resolved = true;
+    this.thenable.rejected = false;
     this.thenable.resolveValue = value;
     return this;
   }
 
   function rejects(value) {
     this.thenable.rejected = true;
+    this.thenable.resolved = false;
     this.thenable.rejectValue = value;
     return this;
   }
