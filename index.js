@@ -34,7 +34,10 @@ function buildThenable() {
       return this;
     },
 
-    finally: function() {
+    finally: function(callback) {
+      if (this.resolved || this.rejected) {
+        callback();
+      }
     }
   };
 }

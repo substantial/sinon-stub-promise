@@ -139,6 +139,37 @@ describe('stubPromise', function() {
     expect(resolveCalled).to.be.false;
   });
 
+  it('does not invoke finally if promise is not resolved or rejected', function() {
+    var finallyCalled = false;
+    promise().finally(function() {
+      finallyCalled = true;
+    });
+
+    expect(finallyCalled).to.be.false;
+  });
+
+  it('invokes finally when promise is resolved', function() {
+    promise.resolves();
+
+    var finallyCalled = false;
+    promise().finally(function() {
+      finallyCalled = true;
+    });
+
+    expect(finallyCalled).to.be.true;
+  });
+
+  it('invokes finally when promise is rejected', function() {
+    promise.rejects();
+
+    var finallyCalled = false;
+    promise().finally(function() {
+      finallyCalled = true;
+    });
+
+    expect(finallyCalled).to.be.true;
+  });
+
   describe('chaining', function() {
     it('supports then chaining', function(done) {
       promise().then(f).then(f);
