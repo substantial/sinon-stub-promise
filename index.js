@@ -12,9 +12,7 @@ function buildThenable() {
         }
 
         // update resolve value for next promise in chain
-        if (returned) {
-          this.resolveValue = returned;
-        }
+        this.resolveValue = returned;
 
         return this;
       }

@@ -219,5 +219,16 @@ describe('stubPromise', function() {
 
       expect(intermediateValue).to.eql('intermediate value');
     });
+
+    it('returns undefined value if intermediate function return undefined', function(done) {
+      promise.resolves();
+
+      promise().then(function() {
+        // a statement that doesn't return
+      }).then(function(value) {
+        expect(value).to.be.undefined;
+        done();
+      });
+    });
   });
 });
