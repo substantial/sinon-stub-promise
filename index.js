@@ -26,7 +26,11 @@ function buildThenable() {
 
     catch: function(onReject) {
       if (this.rejected) {
-        onReject(this.rejectValue);
+        try {
+          onReject(this.rejectValue);
+        } catch (e) {
+          this.rejectValue = e;
+        }
         return this;
       }
       return this;

@@ -230,5 +230,15 @@ describe('stubPromise', function() {
         done();
       });
     });
+
+    it('invokes chained catch if previous catch throws', function(done) {
+      promise.rejects();
+      promise().catch(function() {
+        throw new Error('error1');
+      }).catch(function(e) {
+        expect(e.message).to.eql('error1');
+        done();
+      });
+    });
   });
 });
