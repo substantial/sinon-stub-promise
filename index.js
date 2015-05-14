@@ -3,18 +3,23 @@
 function buildThenable() {
   return {
     then: function(onFulfill, onReject) {
-      if (this.resolved) {
-        var returned = onFulfill(this.resolveValue);
+      try {
+        if (this.resolved) {
+          var returned = onFulfill(this.resolveValue);
 
-        // promise returned, return that for next handler in chain
-        if (returned && returned.then) {
-          return returned;
+          // promise returned, return that for next handler in chain
+          if (returned && returned.then) {
+            return returned;
+          }
+
+          // update resolve value for next promise in chain
+          this.resolveValue = returned;
+
+          return this;
         }
-
-        // update resolve value for next promise in chain
-        this.resolveValue = returned;
-
-        return this;
+      } catch(error) {
+        this.rejectValue = error;
+        this.rejected = true;
       }
 
       if (this.rejected && onReject) {
