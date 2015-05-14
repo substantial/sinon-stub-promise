@@ -240,5 +240,16 @@ describe('stubPromise', function() {
         done();
       });
     });
+
+    it('invokes catch if error thrown inside onFulfill', function(done) {
+      promise.resolves();
+
+      promise().then(function() {
+        throw new Error('error');
+      }).catch(function(error) {
+        expect(error.message).to.eql('error');
+        done();
+      });
+    });
   });
 });
