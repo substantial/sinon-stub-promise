@@ -15,7 +15,7 @@
     "test": "node_modules/.bin/mocha spec"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
+    "chai": "^2.3.0",
     "mocha": "^2.1.0",
     "rsvp": "^3.0.16",
     "sinon": "^1.12.2"

@@ -1,5 +1,6 @@
 var sinon = require('sinon');
 var sinonStubPromise = require('../index');
+var AssertionError = require('chai').AssertionError;
 var expect = require('chai').expect;
 var RSVP = require('rsvp');
 
@@ -250,6 +251,18 @@ describe('stubPromise', function() {
         expect(error.message).to.eql('error');
         done();
       });
+    });
+
+    it('throws error if assertion error', function() {
+      promise.resolves();
+
+      function throwError() {
+        throw new AssertionError();
+      }
+
+      expect(function() {
+        promise().then(throwError)
+      }).to.throw(AssertionError);
     });
   });
 });
