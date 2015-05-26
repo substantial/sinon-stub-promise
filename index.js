@@ -1,5 +1,3 @@
-
-
 function buildThenable() {
   return {
     then: function(onFulfill, onReject) {
@@ -18,6 +16,9 @@ function buildThenable() {
           return this;
         }
       } catch(error) {
+        if (error.constructor.name.match(/AssertionError/)) {
+          throw error;
+        }
         this.rejectValue = error;
         this.rejected = true;
       }
