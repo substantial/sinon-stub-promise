@@ -77,7 +77,7 @@ function setup(sinon) {
   };
 }
 
-if (module && module.exports) {
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = setup;
 } else if (window.sinon) {
   setup(window.sinon);
