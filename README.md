@@ -84,3 +84,7 @@ reject the promise for the code under test to pass.
 This is not a [Promises/A+](https://promisesaplus.com/) compliant library. We
 built it to support how we are currently using promises. There is a test suite
 that will grow over time as we identify any short comings of this library.
+
+## To Do
+
+* Allow for chaining with `withArgs`. Ideally we could do things like `sinon.stub().withArgs(42).resolves('value')`.
