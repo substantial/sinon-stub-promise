@@ -264,5 +264,23 @@ describe('stubPromise', function() {
         promise().then(throwError)
       }).to.throw(AssertionError);
     });
+
+    it('does not execute additional then blocks when an error is thrown', function(done) {
+      promise.resolves();
+
+      var callCount = 0;
+      promise()
+        .then(function() {
+          throw new Error('Stop the insanity');
+        })
+        .then(function() {
+          callCount++;
+        })
+        .catch(function(error) {
+          expect(callCount).to.eql(0);
+          expect(error.message).to.eql('Stop the insanity');
+          done();
+        });
+    });
   });
 });

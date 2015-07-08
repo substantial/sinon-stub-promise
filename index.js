@@ -2,7 +2,7 @@ function buildThenable() {
   return {
     then: function(onFulfill, onReject) {
       try {
-        if (this.resolved) {
+        if (this.resolved && !this.rejected) {
           var returned = onFulfill(this.resolveValue);
 
           // promise returned, return that for next handler in chain
@@ -82,4 +82,3 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (window.sinon) {
   setup(window.sinon);
 }
-
