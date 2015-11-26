@@ -79,6 +79,12 @@ testing conditional branches (e.g. test what happens when promise succeeds,
 then test what happens when promise fails), you have to either resolve or
 reject the promise for the code under test to pass.
 
+## Usage with Karma
+
+In order to use this with the [Karma](http://karma-runner.github.io/) test runner
+you can either add `node_modules/sinon-stub-promise/index.js` to `files` in your config or, alternatively, use the
+[karma-sinon-stub-promise](https://github.com/alexweber/karma-sinon-stub-promise) plugin.
+
 ## Stability?
 
 This is not a [Promises/A+](https://promisesaplus.com/) compliant library. We
