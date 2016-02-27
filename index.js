@@ -11,7 +11,9 @@ function buildThenable() {
           }
 
           // update resolve value for next promise in chain
-          this.resolveValue = returned;
+          if (returned !== undefined) {
+            this.resolveValue = returned;
+          }
 
           return this;
         }

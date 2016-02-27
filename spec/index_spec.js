@@ -29,6 +29,21 @@ describe('stubPromise', function() {
 
     expect(resolveValue).to.equal('resolve value');
   });
+  
+  it('can resolve multiple times with the same value', function() {
+    var secondResolvedValue = null;
+    promise.resolves('resolve value');
+    
+    promise().then(function(arg) {
+      resolveValue = arg;
+    });
+    expect(resolveValue).to.equal('resolve value');
+    
+    promise().then(function(arg) {
+      secondResolvedValue = arg;
+    });
+    expect(secondResolvedValue).to.equal('resolve value');
+  });
 
   it('can resolve empty value', function() {
     promise.resolves();
