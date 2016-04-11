@@ -26,8 +26,7 @@ function buildThenable() {
       }
 
       if (this.rejected && onReject) {
-        onReject(this.rejectValue);
-        return this;
+        return this.catch(onReject);
       }
       return this;
     },
@@ -35,7 +34,11 @@ function buildThenable() {
     catch: function(onReject) {
       if (this.rejected) {
         try {
-          onReject(this.rejectValue);
+          const value = onReject(this.rejectValue);
+          this.resolved = true;
+          this.rejected = false;
+          this.resolveValue = value;
+          this.rejectValue = undefined;
         } catch (e) {
           this.rejectValue = e;
         }

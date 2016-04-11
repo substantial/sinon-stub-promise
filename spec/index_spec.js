@@ -1,8 +1,10 @@
 var sinon = require('sinon');
 var sinonStubPromise = require('../index');
 var AssertionError = require('chai').AssertionError;
-var expect = require('chai').expect;
+var chai = require('chai');
 var RSVP = require('rsvp');
+var expect = chai.expect;
+var assert = chai.assert;
 
 sinonStubPromise(sinon);
 
@@ -186,6 +188,34 @@ describe('stubPromise', function() {
     expect(finallyCalled).to.be.true;
   });
 
+  it('handles catches that succeed', function() {
+    promise.rejects('an error');
+    promise().then(f, function(e) {
+      expect(e).to.equal('an error');
+      return 'no error';
+    }).then(function (d) {
+      expect(d).to.equal('no error');
+    })
+  });
+
+  it('handles catches that fail', function() {
+    promise.rejects('an error');
+
+    var onFulfillCalled = false;
+    var onRejectCalled = false;
+    promise().then(f, function(e) {
+      expect(e).to.equal('an error');
+      throw new Error('another');
+    }).then(function () {
+      onFulfillCalled = true;
+    }, function (e) {
+      onRejectCalled = true;
+      expect(e.message).to.equal('another');
+    })
+    expect(onFulfillCalled).to.be.false;
+    expect(onRejectCalled).to.be.true;
+  });
+
   describe('chaining', function() {
     it('supports then chaining', function(done) {
       promise().then(f).then(f);
@@ -297,5 +327,22 @@ describe('stubPromise', function() {
           done();
         });
     });
+
+    it('does execute additional then blocks when an error has been caught', function(done) {
+      promise.resolves();
+
+      promise()
+        .then(function() {
+          throw new Error('Stop the insanity');
+        })
+        .catch(function(error) {
+          expect(error.message).to.eql('Stop the insanity');
+          return 'No more error';
+        })
+        .then(function (r) {
+          expect(r).to.eql('No more error');
+          done();
+        });
+    });  
   });
 });
