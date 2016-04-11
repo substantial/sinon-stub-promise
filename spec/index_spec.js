@@ -1,8 +1,10 @@
 var sinon = require('sinon');
 var sinonStubPromise = require('../index');
 var AssertionError = require('chai').AssertionError;
-var expect = require('chai').expect;
+var chai = require('chai');
 var RSVP = require('rsvp');
+var expect = chai.expect;
+var assert = chai.assert;
 
 sinonStubPromise(sinon);
 
@@ -29,16 +31,16 @@ describe('stubPromise', function() {
 
     expect(resolveValue).to.equal('resolve value');
   });
-  
+
   it('can resolve multiple times with the same value', function() {
     var secondResolvedValue = null;
     promise.resolves('resolve value');
-    
+
     promise().then(function(arg) {
       resolveValue = arg;
     });
     expect(resolveValue).to.equal('resolve value');
-    
+
     promise().then(function(arg) {
       secondResolvedValue = arg;
     });
@@ -186,6 +188,32 @@ describe('stubPromise', function() {
     expect(finallyCalled).to.be.true;
   });
 
+  it('handles catches that succeed', function(done) {
+    promise.rejects('an error');
+
+    promise().then(f, function(e) {
+      expect(e).to.equal('an error');
+      return 'no error';
+    }).then(function (d) {
+      expect(d).to.equal('no error');
+      done();
+    })
+  });
+
+  it('handles catches that fail', function(done) {
+    promise.rejects('an error');
+
+    promise().then(f, function(e) {
+      expect(e).to.equal('an error');
+      throw new Error('another');
+    }).then(function () {
+      done(new Error("Promise did not throw"))
+    }, function (e) {
+      expect(e.message).to.equal('another');
+      done();
+    })
+  });
+
   describe('chaining', function() {
     it('supports then chaining', function(done) {
       promise().then(f).then(f);
@@ -294,6 +322,23 @@ describe('stubPromise', function() {
         .catch(function(error) {
           expect(callCount).to.eql(0);
           expect(error.message).to.eql('Stop the insanity');
+          done();
+        });
+    });
+
+    it('does execute additional then blocks when an error has been caught', function(done) {
+      promise.resolves();
+
+      promise()
+        .then(function() {
+          throw new Error('Stop the insanity');
+        })
+        .catch(function(error) {
+          expect(error.message).to.eql('Stop the insanity');
+          return 'No more error';
+        })
+        .then(function (r) {
+          expect(r).to.eql('No more error');
           done();
         });
     });
