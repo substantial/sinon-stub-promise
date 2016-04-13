@@ -81,6 +81,15 @@ function setup(sinon) {
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = setup;
-} else if (window.sinon) {
-  setup(window.sinon);
+} else if (typeof window !== 'undefined') {
+	if(typeof window.sinon !== 'undefined') setup(window.sinon);
+} else {
+	if(typeof this.sinon !== 'undefined') setup(this.sinon);
 }
+
+//Another possible fixed inspired by how moment.js implements it's module creation code.
+/*(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    global.sinonStubPromise = factory(sinon)
+}(this, setup));*/
