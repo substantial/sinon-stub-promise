@@ -1,5 +1,8 @@
 function buildThenable() {
   return {
+    onFulfilled: [],
+    onRejected: [],
+    onFinally: [],
     then: function(onFulfill, onReject) {
       try {
         if (this.resolved && !this.rejected) {
@@ -28,6 +31,12 @@ function buildThenable() {
       if (this.rejected && onReject) {
         return this.catch(onReject);
       }
+      if (!this.rejected && onFulfill) {
+        this.onFulfilled.push(onFulfill);
+      }
+      if (!this.resolved && onReject) {
+        this.onRejected.push(onReject);
+      }
       return this;
     },
 
@@ -44,13 +53,18 @@ function buildThenable() {
         }
         return this;
       }
+      if (!this.resolved) {
+        this.onRejected.push(onReject);
+      }
       return this;
     },
 
     finally: function(callback) {
       if (this.resolved || this.rejected) {
         callback();
+        return;
       }
+      this.onFinally.push(callback);
     }
   };
 }
@@ -60,6 +74,11 @@ function setup(sinon) {
     this.thenable.resolved = true;
     this.thenable.rejected = false;
     this.thenable.resolveValue = value;
+    this.thenable.onFulfilled
+      .concat(this.thenable.onFinally)
+      .forEach(function(callback) {
+        callback(value);
+    });
     return this;
   }
 
@@ -67,6 +86,11 @@ function setup(sinon) {
     this.thenable.rejected = true;
     this.thenable.resolved = false;
     this.thenable.rejectValue = value;
+    this.thenable.onRejected
+      .concat(this.thenable.onFinally)
+      .forEach(function(callback) {
+        callback(value);
+    });
     return this;
   }
 

@@ -67,6 +67,17 @@ describe('stubPromise', function() {
 
     expect(resolved).to.be.false;
   });
+  it('does resolve synchronously when explicitly resolved AFTER a then is added', function() {
+    var resolved = false;
+
+    promise().then(function() {
+      resolved = true;
+    });
+
+    expect(resolved).to.be.false;
+    promise.resolves();
+    expect(resolved).to.be.true;
+  });
 
   it('returns stub from resolves call', function(done) {
     var stub = promise.resolves();
@@ -119,6 +130,28 @@ describe('stubPromise', function() {
     });
 
     expect(rejected).to.be.false;
+  });
+  it('can reject via catch synchronously when explicitly rejected AFTER a catch is added', function() {
+    var rejected = false;
+
+    promise().catch(function() {
+      rejected = true;
+    });
+
+    expect(rejected).to.be.false;
+    promise.rejects();
+    expect(rejected).to.be.true;
+  });
+  it('can reject via a then reject function synchronously when explicitly rejected AFTER a then reject function is added', function() {
+    var rejected = false;
+
+    promise().then(f, function() {
+      rejected = true;
+    });
+
+    expect(rejected).to.be.false;
+    promise.rejects();
+    expect(rejected).to.be.true;
   });
 
   it('returns stub from rejects call', function(done) {
@@ -177,6 +210,17 @@ describe('stubPromise', function() {
     expect(finallyCalled).to.be.true;
   });
 
+  it('invokes finally when promise is resolved after the finally is added', function() {
+    var finallyCalled = false;
+    promise().finally(function() {
+      finallyCalled = true;
+    });
+
+    expect(finallyCalled).to.be.false;
+    promise.resolves();
+    expect(finallyCalled).to.be.true;
+  });
+
   it('invokes finally when promise is rejected', function() {
     promise.rejects();
 
@@ -185,6 +229,17 @@ describe('stubPromise', function() {
       finallyCalled = true;
     });
 
+    expect(finallyCalled).to.be.true;
+  });
+
+  it('invokes finally when promise is rejected after the finally is added', function() {
+    var finallyCalled = false;
+    promise().finally(function() {
+      finallyCalled = true;
+    });
+
+    expect(finallyCalled).to.be.false;
+    promise.rejects();
     expect(finallyCalled).to.be.true;
   });
 
