@@ -1,3 +1,9 @@
+## [v3.0.0]
+> July 16, 2016
+
+- **Major:** Only invoke onResolve/onReject when stub.resolve()/stub.reject()
+called ([#18](https://github.com/substantial/sinon-stub-promise/pull/18))
+
 ## [v2.0.0]
 > April 13, 2016
 
