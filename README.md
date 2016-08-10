@@ -1,4 +1,5 @@
 # sinon-stub-promise
+[![Build Status](https://travis-ci.org/substantial/sinon-stub-promise.svg?branch=master)](https://travis-ci.org/substantial/sinon-stub-promise)
 
 This is a little package that makes testing of promises easier when stubbing
 with [Sinon.JS](http://sinonjs.org/). This library ensures stubbed promises are
