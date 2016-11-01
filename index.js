@@ -44,6 +44,11 @@ function buildThenable() {
       if (this.rejected) {
         try {
           const value = onReject(this.rejectValue);
+
+          if (value && value.then) {
+            return value;
+          }
+ 
           this.resolved = true;
           this.rejected = false;
           this.resolveValue = value;
