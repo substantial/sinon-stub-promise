@@ -291,7 +291,22 @@ describe('stubPromise', function() {
       done();
     });
 
-    it('returns promise if returned while chaining', function(done) {
+    it('delegates resolution if onReject returns a promise', function(done) {
+      promise.rejects('initial value');
+
+      var fReturningPromise = function() {
+        return new RSVP.Promise(function(resolve, reject) {
+          resolve('promise value');
+        });
+      };
+
+      promise().catch(fReturningPromise).then(function(innerValue) {
+        expect(innerValue).to.eql('promise value');
+        done();
+      });
+    });
+
+    it('delegates resolution if onFulfill returns a promise', function(done) {
       promise.resolves('initial value');
 
       var fReturningPromise = function() {
