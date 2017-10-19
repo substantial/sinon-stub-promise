@@ -5,8 +5,18 @@ var chai = require('chai');
 var RSVP = require('rsvp');
 var expect = chai.expect;
 var assert = chai.assert;
+var rewire = require("rewire");
+
+var testFunction = rewire('./my-tested-file');
 
 sinonStubPromise(sinon);
+
+var async1Stub = sinon.stub().returnsPromise();
+var async2Stub = sinon.stub().returnsPromise();
+
+testFunction.__set__("async1", async1Stub);
+testFunction.__set__("async2", async2Stub);
+
 
 describe('stubPromise', function() {
   var f, promise, resolveValue, rejectValue;
@@ -412,5 +422,22 @@ describe('stubPromise', function() {
           done();
         });
     });
+  });
+});
+
+describe.only('multiple promises', function() {
+  it('should return different result', function() {
+    expect(async1Stub.calledOnce).to.be.false;
+    expect(async2Stub.calledOnce).to.be.false;
+
+    testFunction();
+    expect(async1Stub.calledOnce).to.be.true;
+    expect(async2Stub.calledOnce).to.be.false;
+
+    async1Stub.resolves('1111111');
+    expect(async2Stub.calledOnce).to.be.true;
+
+    // THE SECOND STUB ALSO GETS RESOLVED - no need to resolve it and resolves with the data of first stub
+    // async2Stub.resolves('2222222');
   });
 });
