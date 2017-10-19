@@ -18,6 +18,7 @@
   "devDependencies": {
     "chai": "^2.3.0",
     "mocha": "^2.1.0",
+    "rewire": "^2.5.2",
     "rsvp": "^3.0.16",
     "sinon": "^1.12.2"
   }
